@@ -8,13 +8,13 @@ struct node {
     Node children[];
 };
 
-Node init_fs() {
+void init_fs() {
     static struct node node = {
             "root",
             false,
             NULL
     };
 
-    return &node;
+    current_node = &node;
 }
 

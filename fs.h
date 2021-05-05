@@ -11,6 +11,8 @@ typedef union {
     char file_content[];
 } node_content;
 
-Node init_fs();
+Node current_node;
+
+void init_fs();
 
 #endif //SFS_FS_H
