@@ -2,6 +2,12 @@
 #include "fs.h"
 
 int main() {
-    printf("Hello, World!\n");
+    init_fs();
+    mkdir("foo");
+    mkdir("bar");
+    mkdir("baz");
+    mkdir("bax");
+    mkdir("bac");
+    ls();
     return 0;
 }

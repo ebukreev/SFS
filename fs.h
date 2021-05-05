@@ -3,16 +3,20 @@
 
 #include <stdbool.h>
 
-struct node;
-typedef struct node* Node;
+struct node {
+    const char* name;
+    bool isFile;
+    const char* content;
+    unsigned children_count;
+    struct node* children;
+};
 
-typedef union {
-    char* dir_content[];
-    char file_content[];
-} node_content;
-
-Node current_node;
+struct node* current_node;
 
 void init_fs();
+
+void ls();
+
+void mkdir(const char* name);
 
 #endif //SFS_FS_H
