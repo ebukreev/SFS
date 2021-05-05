@@ -8,6 +8,7 @@ void init_fs() {
             "root",
             false,
             NULL,
+            NULL,
             0,
             empty
     };
@@ -34,6 +35,7 @@ void mkdir(const char *name) {
             name,
             false,
             NULL,
+            current_node,
             0,
             empty
     };
