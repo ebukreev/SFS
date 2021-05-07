@@ -3,6 +3,8 @@
 
 #include <stdbool.h>
 
+#define ARRAY_START_SIZE 10
+
 typedef struct node {
     const char *name;
     bool isFile;

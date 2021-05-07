@@ -1,9 +1,6 @@
 #include "fs.h"
-#include <stdio.h>
 #include <string.h>
 #include "malloc.h"
-
-#define ARRAY_START_SIZE 10
 
 void init_fs() {
     Node *n = (Node *) malloc(sizeof(Node));
@@ -217,20 +214,30 @@ void rm(const char *path) {
     Node *node = get_by_path(path);
 
     if (node->children_count == 0) {
-        bool flag = false;
-        for (int i = 0; i < node->parent->children_count; i++) {
-            if (flag) {
-                node->parent->children[i - 1] = node->parent->children[i];
+        if (strcmp(node->name, "/") != 0) {
+            bool flag = false;
+            for (int i = 0; i < node->parent->children_count; i++) {
+                if (flag) {
+                    node->parent->children[i - 1] = node->parent->children[i];
+                } else if (strcmp(node->parent->children[i].name, node->name) == 0) {
+                    flag = true;
+                }
             }
-            if (strcmp(node->parent->children[i].name, node->name) == 0) {
-                flag = true;
+            node->parent->children_count--;
+            if (node->parent->children_count < node->parent->children_size / 2) {
+                node->parent->children = realloc(node->parent->children, node->parent->children_size / 2 * sizeof (Node));
             }
+            if (node->parent->children_count == 0) {
+                free(node);
+            }
+        } else {
+            free(node);
         }
-        node->parent->children_count--;
-        free(node);
     } else {
-        for (int i = 0; i < node->children_count; i++) {
-            rm(get_path(&node->children[0]));
+        const size_t size = node->children_count;
+        for (int i = 1; i <= size; i++) {
+            rm(get_path(&node->children[size - i]));
         }
+        rm(path);
     }
 }

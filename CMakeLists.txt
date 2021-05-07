@@ -3,4 +3,4 @@ project(SFS C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(SFS main.c fs.c fs.h test/CuTest.c test/CuTest.h)
+add_executable(SFS main.c fs.c fs.h tests.c)
