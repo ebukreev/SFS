@@ -9,6 +9,6 @@ int main() {
     cd("bar");
     rm("test.txt");
     cd("..");
-    ls();
+    printf("%s", ls());
     return 0;
 }

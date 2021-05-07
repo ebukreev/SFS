@@ -18,9 +18,9 @@ Node *root_node;
 
 void init_fs();
 
-void pwd();
+const char *pwd();
 
-void ls();
+const char *ls();
 
 void cd(const char *path);
 
@@ -28,7 +28,7 @@ void mkdir(const char *path);
 
 void mkfile(const char *path, const char *content);
 
-void show_content(const char *path);
+const char *show_content(const char *path);
 
 void rm(const char *path);
 

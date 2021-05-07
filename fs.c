@@ -126,14 +126,27 @@ char *get_path(Node *node) {
     return result;
 }
 
-void pwd() {
-    printf("%s\n", get_path(current_node));
+const char *pwd() {
+    return get_path(current_node);
 }
 
-void ls() {
+const char *ls() {
+    size_t result_size = 0;
     for (int i = 0; i < current_node->children_count; i++) {
-        printf("%s\n", current_node->children[i].name);
+        result_size += strlen(current_node->children[i].name) + 1;
     }
+
+    char *result = calloc(result_size + 1, sizeof (char));
+    size_t result_index = 0;
+
+    for (int i = 0; i < current_node->children_count; i++) {
+        for (int j = 0; j < strlen(current_node->children[i].name); j++) {
+            result[result_index++] = current_node->children[i].name[j];
+        }
+        result[result_index++] = '\n';
+    }
+
+    return result;
 }
 
 void cd(const char *path) {
@@ -190,14 +203,14 @@ void mkfile(const char *path, const char *content) {
     add_to_parent(file, file_parent);
 }
 
-void show_content(const char *path) {
+const char *show_content(const char *path) {
     Node *file = get_by_path(path);
 
     if (!file->isFile) {
-        return;
+        return NULL;
     }
 
-    printf("%s\n", file->content);
+    return file->content;
 }
 
 void rm(const char *path) {
