@@ -3,17 +3,18 @@
 
 #include <stdbool.h>
 
-struct node {
+typedef struct node {
     const char *name;
     bool isFile;
     const char *content;
     struct node *parent;
+    unsigned children_size;
     unsigned children_count;
     struct node *children;
-};
+} Node;
 
-struct node *current_node;
-struct node *root_node;
+Node *current_node;
+Node *root_node;
 
 void init_fs();
 

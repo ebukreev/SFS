@@ -5,9 +5,10 @@ int main() {
     init_fs();
     mkdir("foo");
     mkdir("bar");
-    mkdir("baz");
-    mkdir("bax");
-    mkdir("bac");
+    mkfile("bar/test.txt", "");
+    cd("bar");
+    rm("test.txt");
+    cd("..");
     ls();
     return 0;
 }
