@@ -210,34 +210,26 @@ const char *show_content(const char *path) {
     return file->content;
 }
 
-void rm(const char *path) {
-    Node *node = get_by_path(path);
+void rm(const char *name) {
+    if (strcmp(name, "/") == 0) {
+        free(root_node->children);
+        free(root_node);
+        return;
+    }
 
-    if (node->children_count == 0) {
-        if (strcmp(node->name, "/") != 0) {
-            bool flag = false;
-            for (int i = 0; i < node->parent->children_count; i++) {
-                if (flag) {
-                    node->parent->children[i - 1] = node->parent->children[i];
-                } else if (strcmp(node->parent->children[i].name, node->name) == 0) {
-                    flag = true;
-                }
-            }
-            node->parent->children_count--;
-            if (node->parent->children_count < node->parent->children_size / 2) {
-                node->parent->children = realloc(node->parent->children, node->parent->children_size / 2 * sizeof (Node));
-            }
-            if (node->parent->children_count == 0) {
-                free(node);
-            }
-        } else {
-            free(node);
+    bool flag = false;
+    for (int i = 0; i < current_node->children_count; i++) {
+        if (flag) {
+            current_node->children[i - 1] = current_node->children[i];
+        } else if (strcmp(current_node->children[i].name, name) == 0) {
+            flag = true;
         }
-    } else {
-        const size_t size = node->children_count;
-        for (int i = 1; i <= size; i++) {
-            rm(get_path(&node->children[size - i]));
-        }
-        rm(path);
+    }
+    current_node->children_count--;
+    if (current_node->children_count == 0) {
+       current_node->children = calloc(ARRAY_START_SIZE, sizeof (Node));
+    }
+    if (current_node->children_count <current_node->children_size / 2 && current_node->children_size > ARRAY_START_SIZE) {
+        current_node->children = realloc(current_node->children, current_node->children_size / 2 * sizeof (Node));
     }
 }

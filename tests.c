@@ -189,19 +189,13 @@ static void test_rm() {
     mkdir("foo");
     mkdir("bar");
     mkdir("bar/boo");
-    rm("/foo");
-    if (strcmp(ls(), "bar\n") != 0) {
-        printf("foo not deleted\n");
+    rm("bar");
+    if (strcmp(ls(), "foo\n") != 0) {
+        printf("bar not deleted\n");
         ok = false;
     }
-    rm("/bar/boo");
-    if (strcmp(ls(), "bar\n") != 0) {
-        printf("bar deleted\n");
-        ok = false;
-    }
-    cd("bar");
-    if (strcmp(ls(), "") != 0) {
-        printf("boo not deleted\n");
+    if (current_node->children_count != 1) {
+        printf("children count != 1\n");
         ok = false;
     }
     rm("/");
@@ -210,7 +204,7 @@ static void test_rm() {
     }
 }
 
-int main(void) {
+int main() {
     test_fs_init();
     test_mkdir();
     test_mkfile();

@@ -32,6 +32,6 @@ void mkfile(const char *path, const char *content);
 
 const char *show_content(const char *path);
 
-void rm(const char *path);
+void rm(const char *name);
 
 #endif //SFS_FS_H
