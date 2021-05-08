@@ -20,7 +20,7 @@ void init_fs() {
 Node* get_by_path(const char *path) {
     Node *result;
     Node *cur_node;
-    int i;
+    size_t i;
     if (path[0] == '/') {
         cur_node = root_node;
         i = 1;
@@ -29,8 +29,9 @@ Node* get_by_path(const char *path) {
         i = 0;
     }
 
-    int name_len = 0;
-    char *name = calloc(100, sizeof (char));
+    size_t name_len = 0;
+    size_t name_size = ARRAY_START_SIZE;
+    char *name = calloc(name_size, sizeof (char));
     while (i < strlen(path)) {
         if (path[i] == '/') {
             if (name_len > 0 && i != strlen(path) - 1) {
@@ -42,12 +43,16 @@ Node* get_by_path(const char *path) {
                 }
                 name_len = 0;
                 free(name);
-                name = calloc(100, sizeof (char));
+                name = calloc(name_size, sizeof (char));
             }
         } else if (path[i] == '.' && i != strlen(path) - 1 && path[i + 1] == '.') {
             cur_node = cur_node->parent;
             i++;
         } else {
+            if (name_len + 1 >= name_size) {
+                name_size *= 2;
+                name = (char *) realloc(name, sizeof (char) * name_size);
+            }
             name[name_len] = path[i];
             name_len++;
         }
@@ -67,8 +72,8 @@ Node* get_by_path(const char *path) {
 }
 
 char* get_name(const char *path) {
-    int name_len = 0;
-    int start_i = 0;
+    size_t name_len = 0;
+    size_t start_i = 0;
     int end_i;
 
     if (path[strlen(path) - 1] == '/') {
@@ -86,7 +91,7 @@ char* get_name(const char *path) {
 
     char *name = (char *) calloc(end_i - start_i + 2, sizeof (char));
 
-    for (int i = start_i; i <= end_i; i++) {
+    for (size_t i = start_i; i <= end_i; i++) {
         name[name_len] = path[i];
         name_len++;
     }
@@ -96,7 +101,8 @@ char* get_name(const char *path) {
 
 char *get_path(Node *node) {
     int nodes_size = 0;
-    const char *names[10];
+    size_t names_size = ARRAY_START_SIZE;
+    const char **names = (const char **) calloc(names_size, sizeof (*names));
     Node *cur_node = node;
     size_t path_len = 0;
 
@@ -104,7 +110,13 @@ char *get_path(Node *node) {
         if (strcmp(cur_node->name, "/") == 0) {
             break;
         }
-        names[nodes_size++] = cur_node->name;
+        if (nodes_size + 1 >= names_size) {
+            names_size *= 2;
+            names = realloc(names, names_size * sizeof (*names));
+        }
+        names[nodes_size] = calloc(strlen(cur_node->name), sizeof (char));
+        names[nodes_size] = cur_node->name;
+        nodes_size++;
         path_len += strlen(cur_node->name);
         cur_node = cur_node->parent;
     }
@@ -133,7 +145,7 @@ const char *ls() {
         result_size += strlen(current_node->children[i].name) + 1;
     }
 
-    char *result = calloc(result_size + 1, sizeof (char));
+    char *result = (char *) calloc(result_size + 1, sizeof (char));
     size_t result_index = 0;
 
     for (int i = 0; i < current_node->children_count; i++) {
@@ -218,7 +230,7 @@ void rm(const char *name) {
     }
 
     bool flag = false;
-    for (int i = 0; i < current_node->children_count; i++) {
+    for (size_t i = 0; i < current_node->children_count; i++) {
         if (flag) {
             current_node->children[i - 1] = current_node->children[i];
         } else if (strcmp(current_node->children[i].name, name) == 0) {
