@@ -204,13 +204,14 @@ static void test_rm() {
     }
 }
 
-int main() {
-    test_fs_init();
-    test_mkdir();
-    test_mkfile();
-    test_show_content();
-    test_cd();
-    test_pwd();
-    test_ls();
-    test_rm();
-}
+//int main() {
+//    test_fs_init();
+//    test_mkdir();
+//    test_mkfile();
+//    test_show_content();
+//    test_cd();
+//    test_pwd();
+//    test_ls();
+//    test_rm();
+//    return 0;
+//}

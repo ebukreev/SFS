@@ -1,0 +1,12 @@
+init
+mkdir foo
+mkdir bar
+ls
+mkfile foo/boo test_string
+cd foo
+show boo
+pwd
+rm boo
+ls
+rm /
+exit
