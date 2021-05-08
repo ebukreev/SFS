@@ -35,7 +35,7 @@ Node* get_by_path(const char *path) {
     while (i < strlen(path)) {
         if (path[i] == '/') {
             if (name_len > 0 && i != strlen(path) - 1) {
-                for (int j = 0; j < cur_node->children_count; j++) {
+                for (size_t j = 0; j < cur_node->children_count; j++) {
                     if (strcmp(cur_node->children[j].name, name) == 0) {
                         cur_node = &cur_node->children[j];
                         break;
@@ -61,7 +61,7 @@ Node* get_by_path(const char *path) {
 
     result = cur_node;
 
-    for (int j = 0; j < result->children_count; j++) {
+    for (size_t j = 0; j < result->children_count; j++) {
         if (strcmp(result->children[j].name, name) == 0) {
             result = &result->children[j];
             break;
@@ -73,7 +73,7 @@ Node* get_by_path(const char *path) {
 
 char* get_name(const char *path) {
     size_t name_len = 0;
-    size_t start_i = 0;
+    int start_i = 0;
     int end_i;
 
     if (path[strlen(path) - 1] == '/') {
@@ -91,7 +91,7 @@ char* get_name(const char *path) {
 
     char *name = (char *) calloc(end_i - start_i + 2, sizeof (char));
 
-    for (size_t i = start_i; i <= end_i; i++) {
+    for (int i = start_i; i <= end_i; i++) {
         name[name_len] = path[i];
         name_len++;
     }
@@ -101,7 +101,7 @@ char* get_name(const char *path) {
 
 char *get_path(Node *node) {
     int nodes_size = 0;
-    size_t names_size = ARRAY_START_SIZE;
+    int names_size = ARRAY_START_SIZE;
     const char **names = (const char **) calloc(names_size, sizeof (*names));
     Node *cur_node = node;
     size_t path_len = 0;
@@ -126,7 +126,7 @@ char *get_path(Node *node) {
 
     result[0] = '/';
     for (int i = nodes_size - 1; i >= 0; i--) {
-        for (int j = 0; j < strlen(names[i]); j++) {
+        for (size_t j = 0; j < strlen(names[i]); j++) {
             result[result_index++] = names[i][j];
         }
         result[result_index++] = '/';
@@ -141,15 +141,15 @@ const char *pwd() {
 
 const char *ls() {
     size_t result_size = 0;
-    for (int i = 0; i < current_node->children_count; i++) {
+    for (size_t i = 0; i < current_node->children_count; i++) {
         result_size += strlen(current_node->children[i].name) + 1;
     }
 
     char *result = (char *) calloc(result_size + 1, sizeof (char));
     size_t result_index = 0;
 
-    for (int i = 0; i < current_node->children_count; i++) {
-        for (int j = 0; j < strlen(current_node->children[i].name); j++) {
+    for (size_t i = 0; i < current_node->children_count; i++) {
+        for (size_t j = 0; j < strlen(current_node->children[i].name); j++) {
             result[result_index++] = current_node->children[i].name[j];
         }
         result[result_index++] = '\n';

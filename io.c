@@ -79,7 +79,7 @@ void read_and_execute() {
 
     int res_index = 0;
     int index = 0;
-    for (int i = 0; i < strlen(line); i++) {
+    for (size_t i = 0; i < strlen(line); i++) {
         if (line[i] == ' ' && res_index != 2) {
             res_index++;
             index = 0;
