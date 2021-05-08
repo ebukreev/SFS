@@ -16,8 +16,8 @@ lib: fs.o
 %.o: %.c
 	$(CC) $(CFLAGS) $(INCLUDES) -c -o $@ $<
 
-test: lib
-	$(CC) $(CFLAGS) tests.c $(LIBNAME) -o $(TARGET)
+test: lib tests.o
+	$(CC) $(CFLAGS) tests.o $(LIBNAME) -o $(TARGET)
 	$(TARGET)
 	$(RM) $(TARGET)
 	make clean
